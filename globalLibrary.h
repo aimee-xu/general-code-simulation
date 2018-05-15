@@ -1,3 +1,6 @@
+#ifndef _GLOBALLIBRARY_H_
+#define _GLOBALLIBRARY_H_
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <time.h>
@@ -11,6 +14,21 @@ const long double oneOverRoot2= 0.7071067811865475244008443621048490392848;
 const long double Pi = 3.14159265358979323846264338327950288419716939937510;
 const long double oneoverthree=0.3333333333333333333333333333333333333333;
 
+int larger(int a, int b){
+    
+    if (a>b)
+        return a;
+    else
+        return b;
+}
+
+int smaller(int a, int b){
+    
+    if (a<b)
+        return a;
+    else
+        return b;
+}
 // this handy little function will return the value, 0 or 1, of the bit that is at the specified location
 int extractBit (const int locationOfBitFromRight, const long int theEncodedNumber)
 {
@@ -440,3 +458,20 @@ void dephasingModel (int numQ, int q, double t,  double __complex__ *amp)
     if (ran<pd)
         sigma_z (numQ, q, amp);
 }
+void depolarisingModel (int numQ, int q, double t,  double __complex__ *amp)
+{
+    double pd = 0.5*(1-exp(-t));
+    double ran1; double ran2;
+    ran1 =((double)rand()/(double)RAND_MAX);
+    ran2 =((double)rand()/(double)RAND_MAX);
+    
+    if (ran1<pd){
+        if (ran2<=oneoverthree)
+            sigma_x (numQ, q, amp);
+        else if (ran2>oneoverthree && ran2<= 2*oneoverthree)
+            sigma_y (numQ, q, amp);
+        else if (ran2>2*oneoverthree)
+            sigma_z (numQ, q, amp);
+    }
+}
+#endif
